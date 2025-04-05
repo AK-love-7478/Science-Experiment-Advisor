@@ -3,12 +3,21 @@ import cors from "cors";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import { marked } from "marked";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config(); // Load API key from .env file
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files
+app.use(express.static(__dirname));
 
 // NVIDIA AI API Config
 const openai = new OpenAI({
@@ -36,6 +45,11 @@ app.post("/get-response", async (req, res) => {
     console.error("Error fetching response:", error);
     res.status(500).json({ error: "Failed to fetch response from NVIDIA AI" });
   }
+});
+
+// Add a route for the root path
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
