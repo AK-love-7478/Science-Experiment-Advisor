@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Experiment Advisor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Science Experiment Advisor</h1>
+        <div class="input-section">
+            <input type="text" id="user-input" placeholder="Enter materials (e.g., vinegar, baking soda)">
+            <button onclick="askNVIDIA()">Generate Experiment</button>
+        </div>
+        <div class="result-section">
+            <h2>Experiment Idea</h2>
+            <div id="response"></div>
+        </div>
+    </div>
+</body>
+</html>
