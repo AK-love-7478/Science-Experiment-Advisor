@@ -5,7 +5,7 @@ async function askNVIDIA() {
   responseText.innerText = "Loading..."; // Show loading message
 
   try {
-    const response = await fetch("http://localhost:5000/get-response", {
+    const response = await fetch("/get-response", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

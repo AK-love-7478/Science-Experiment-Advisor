@@ -13,7 +13,13 @@ const __dirname = path.dirname(__filename);
 dotenv.config(); // Load API key from .env file
 
 const app = express();
-app.use(cors());
+
+// Middleware
+app.use(cors({
+  origin: '*', // Allow all origins for testing
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Serve static files
@@ -25,9 +31,18 @@ const openai = new OpenAI({
   baseURL: "https://integrate.api.nvidia.com/v1",
 });
 
+// Health check endpoint for Render
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 app.post("/get-response", async (req, res) => {
   try {
     const { prompt } = req.body;
+
+    if (!prompt) {
+      return res.status(400).json({ error: "Prompt is required" });
+    }
 
     const completion = await openai.chat.completions.create({
       model: "nvidia/llama-3.1-nemotron-70b-instruct",
@@ -43,7 +58,7 @@ app.post("/get-response", async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching response:", error);
-    res.status(500).json({ error: "Failed to fetch response from NVIDIA AI" });
+    res.status(500).json({ error: "Failed to fetch response from NVIDIA AI", details: error.message });
   }
 });
 
